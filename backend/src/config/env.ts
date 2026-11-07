@@ -8,6 +8,10 @@ const schema = z.object({
   DEFAULT_INTERVAL_MS: z.coerce.number().int().min(1000).default(30000),
   DEFAULT_TIMEOUT_MS: z.coerce.number().int().min(100).default(5000),
   FAILURE_THRESHOLD: z.coerce.number().int().min(1).default(3),
+  MAX_RECOVERY_RETRIES: z.coerce.number().int().min(1).max(10).default(3),
+  RECOVERY_COOLDOWN_MS: z.coerce.number().int().min(0).default(60000),
+  VERIFY_DELAY_MS: z.coerce.number().int().min(0).default(3000),
+  MAX_RESTARTS_PER_HOUR: z.coerce.number().int().min(1).default(6),
   SCHEDULER_ENABLED: z.enum(["true", "false"]).default("true").transform((v) => v === "true"),
 });
 

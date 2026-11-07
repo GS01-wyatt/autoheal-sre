@@ -4,7 +4,12 @@ import type { Logger } from "pino";
 
 export class Scheduler {
   private timers = new Map<number, NodeJS.Timeout>();
-  constructor(private repo: Repo, private log: Logger, private failureThreshold: number) {}
+  constructor(
+    private repo: Repo,
+    private log: Logger,
+    private failureThreshold: number,
+    private onResult?: (serviceId: number, result: CheckResult) => void
+  ) {}
 
   /** Run one check now, store it, and log threshold breaches. */
   async runCheck(serviceId: number): Promise<CheckResult | undefined> {
@@ -17,9 +22,9 @@ export class Scheduler {
     const fails = this.repo.consecutiveFailures(serviceId);
     this.log.info({ service: svc.name, status: result.status, ms: result.responseTimeMs, fails }, "health check");
     if (result.status === "down" && fails === this.failureThreshold) {
-      // Phase 2 hook: incident creation + healing engine will start here.
       this.log.warn({ service: svc.name, fails }, "failure threshold reached");
     }
+    this.onResult?.(serviceId, result); // hand over to the healing engine
     return result;
   }
 
