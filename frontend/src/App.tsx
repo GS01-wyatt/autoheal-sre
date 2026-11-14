@@ -2,6 +2,9 @@ import { Link, Route, Routes } from 'react-router-dom'
 import Layout from './components/Layout'
 import Overview from './pages/Overview'
 import Services from './pages/Services'
+import Incidents from './pages/Incidents'
+import AutoHealing from './pages/AutoHealing'
+import Logs from './pages/Logs'
 import { EmptyState } from './components/ui'
 import { SearchX } from 'lucide-react'
 
@@ -21,6 +24,9 @@ export default function App() {
       <Route element={<Layout />}>
         <Route index element={<Overview />} />
         <Route path="services" element={<Services />} />
+        <Route path="incidents" element={<Incidents />} />
+        <Route path="healing" element={<AutoHealing />} />
+        <Route path="logs" element={<Logs />} />
         <Route
           path="*"
           element={

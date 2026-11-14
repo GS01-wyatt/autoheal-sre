@@ -68,6 +68,43 @@ export interface Incident {
   resolved_at: string | null
   recovery_attempts: number
 }
+export interface Attempt {
+  id: number
+  incident_id: number
+  service_id: number
+  attempt_no: number
+  action: string
+  outcome: 'running' | 'success' | 'failed'
+  detail: string | null
+  started_at: string
+  finished_at: string | null
+}
+export interface LogRow {
+  id: number
+  level: 'debug' | 'info' | 'warn' | 'error'
+  source: string
+  message: string
+  service_id: number | null
+  incident_id: number | null
+  created_at: string
+}
+export interface IncidentDetail extends Incident {
+  attempts: Attempt[]
+  timeline: LogRow[]
+}
+export interface HealingStatus {
+  service_id: number
+  name: string
+  recovery_target: string | null
+  active_incident_id: number | null
+  incident_status: IncidentStatus | null
+  attempts_used: number
+  max_retries: number
+  cooldown_remaining_ms: number
+  total_restarts: number
+  last_outcome: 'running' | 'success' | 'failed' | null
+}
+export type SimMode = 'fail' | 'slow' | 'crash' | 'heal'
 export interface Info {
   app: string
   demo_mode: boolean
@@ -86,6 +123,19 @@ export interface NewService {
 }
 
 export const api = {
+  incident: (id: number) => request<IncidentDetail>(`/incidents/${id}`),
+  logs: (q: { level?: string; q?: string; service_id?: number; limit?: number } = {}) => {
+    const p = new URLSearchParams()
+    if (q.level) p.set('level', q.level)
+    if (q.q) p.set('q', q.q)
+    if (q.service_id) p.set('service_id', String(q.service_id))
+    if (q.limit) p.set('limit', String(q.limit))
+    const s = p.toString()
+    return request<LogRow[]>(`/logs${s ? `?${s}` : ''}`)
+  },
+  healingStatus: () => request<HealingStatus[]>('/healing/status'),
+  simulate: (target: string, mode: SimMode) =>
+    request<{ target: string; mode: string; detail: string }>(`/simulate/${target}`, { method: 'POST', body: JSON.stringify({ mode }) }),
   health: () => request<{ status: string; db: string; uptime_s: number }>('/health'),
   info: () => request<Info>('/info'),
   services: () => request<Service[]>('/services'),

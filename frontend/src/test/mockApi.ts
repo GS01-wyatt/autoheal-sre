@@ -8,12 +8,12 @@ export const reply = (status: number, body?: unknown) => (): Reply => ({ status,
 
 /** Replaces fetch with a fake backend. Keys look like "GET /api/metrics". Returns the list of calls made. */
 export function mockApi(routes: Record<string, Handler>) {
-  const calls: { key: string; body?: unknown }[] = []
+  const calls: { key: string; url: string; body?: unknown }[] = []
   vi.stubGlobal(
     'fetch',
     vi.fn(async (input: string, init?: RequestInit) => {
       const key = `${init?.method ?? 'GET'} ${String(input).split('?')[0]}`
-      calls.push({ key, body: init?.body ? JSON.parse(String(init.body)) : undefined })
+      calls.push({ key, url: String(input), body: init?.body ? JSON.parse(String(init.body)) : undefined })
       const h = routes[key]
       if (h === undefined) return new Response(JSON.stringify({ error: `not mocked: ${key}` }), { status: 404 })
       const out: Reply = typeof h === 'function' ? (h as (i?: RequestInit) => Reply)(init) : { status: 200, body: h }
@@ -60,5 +60,41 @@ export const service = (over: Record<string, unknown> = {}) => ({
   enabled: true,
   recovery_target: null,
   created_at: new Date().toISOString(),
+  ...over,
+})
+export const incident = (over: Record<string, unknown> = {}) => ({
+  id: 7,
+  service_id: 1,
+  service_name: 'Demo App',
+  severity: 'warning',
+  status: 'resolved',
+  opened_at: new Date(Date.now() - 60000).toISOString(),
+  resolved_at: new Date(Date.now() - 50000).toISOString(),
+  recovery_attempts: 1,
+  ...over,
+})
+
+export const logRow = (over: Record<string, unknown> = {}) => ({
+  id: 1,
+  level: 'info',
+  source: 'healing',
+  message: 'Recovered on attempt 1',
+  service_id: 1,
+  incident_id: 7,
+  created_at: new Date().toISOString(),
+  ...over,
+})
+
+export const healing = (over: Record<string, unknown> = {}) => ({
+  service_id: 1,
+  name: 'Demo App',
+  recovery_target: 'demo-app',
+  active_incident_id: null,
+  incident_status: null,
+  attempts_used: 0,
+  max_retries: 3,
+  cooldown_remaining_ms: 0,
+  total_restarts: 2,
+  last_outcome: 'success',
   ...over,
 })
