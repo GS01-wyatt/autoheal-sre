@@ -84,3 +84,12 @@ describe("migration from Phase 1 database", () => {
     db.close();
   });
 });
+describe("info endpoint", () => {
+  it("reports settings and demo mode without exposing anything sensitive", async () => {
+    const plain = request(createApp({ db: openDb(":memory:") }).app);
+    const a = (await plain.get("/api/info")).body;
+    expect(a).toMatchObject({ app: "autoheal-sre", demo_mode: false, failure_threshold: 3, allowed_targets: ["demo-app"] });
+    const demo = request(createApp({ db: openDb(":memory:"), simulator: { simulate: async () => ({ ok: true, detail: "x" }) } }).app);
+    expect((await demo.get("/api/info")).body.demo_mode).toBe(true);
+  });
+});

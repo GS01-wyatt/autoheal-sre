@@ -9,6 +9,7 @@ import { HealingEngine, type EngineOptions, type RecoveryWorker } from "./healin
 import { apiRouter } from "./routes/api";
 import { healingRouter } from "./routes/healing";
 import { simulateRouter, type Simulator } from "./routes/simulate";
+import { infoRouter } from "./routes/info";
 import { HttpError } from "./lib/errors";
 import { logger } from "./lib/logger";
 
@@ -37,6 +38,7 @@ export function createApp(opts: AppOptions) {
   const defaults = opts.defaults ?? { interval_ms: 30000, timeout_ms: 5000 };
   app.use("/api", apiRouter({ db: opts.db, repo, scheduler, defaults }));
   app.use("/api", healingRouter({ repo, h, engine }));
+  app.use("/api", infoRouter({ engine, demoMode: !!opts.simulator }));
   if (opts.simulator) app.use("/api", simulateRouter({ h, simulator: opts.simulator }));
   app.use((_req, _res, next) => next(new HttpError(404, "Route not found")));
 
