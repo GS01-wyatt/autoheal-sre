@@ -8,6 +8,7 @@ import { Scheduler } from "./monitor/scheduler";
 import { HealingEngine, type EngineOptions, type RecoveryWorker } from "./healing/engine";
 import { apiRouter } from "./routes/api";
 import { healingRouter } from "./routes/healing";
+import { simulateRouter, type Simulator } from "./routes/simulate";
 import { HttpError } from "./lib/errors";
 import { logger } from "./lib/logger";
 
@@ -17,6 +18,7 @@ export interface AppOptions {
   defaults?: { interval_ms: number; timeout_ms: number };
   engine?: Partial<EngineOptions>;
   worker?: RecoveryWorker;
+  simulator?: Simulator; // only provided in DEMO_MODE
 }
 
 export function createApp(opts: AppOptions) {
@@ -35,6 +37,7 @@ export function createApp(opts: AppOptions) {
   const defaults = opts.defaults ?? { interval_ms: 30000, timeout_ms: 5000 };
   app.use("/api", apiRouter({ db: opts.db, repo, scheduler, defaults }));
   app.use("/api", healingRouter({ repo, h, engine }));
+  if (opts.simulator) app.use("/api", simulateRouter({ h, simulator: opts.simulator }));
   app.use((_req, _res, next) => next(new HttpError(404, "Route not found")));
 
   const onError: ErrorRequestHandler = (err, _req, res, _next) => {
