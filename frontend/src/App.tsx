@@ -2,6 +2,7 @@ import { Link, Route, Routes } from 'react-router-dom'
 import Layout from './components/Layout'
 import Overview from './pages/Overview'
 import Services from './pages/Services'
+import LiveMetrics from './pages/LiveMetrics'
 import Incidents from './pages/Incidents'
 import AutoHealing from './pages/AutoHealing'
 import Logs from './pages/Logs'
@@ -24,6 +25,7 @@ export default function App() {
       <Route element={<Layout />}>
         <Route index element={<Overview />} />
         <Route path="services" element={<Services />} />
+        <Route path="metrics" element={<LiveMetrics />} />
         <Route path="incidents" element={<Incidents />} />
         <Route path="healing" element={<AutoHealing />} />
         <Route path="logs" element={<Logs />} />

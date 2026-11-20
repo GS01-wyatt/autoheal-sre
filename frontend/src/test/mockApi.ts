@@ -98,3 +98,15 @@ export const healing = (over: Record<string, unknown> = {}) => ({
   last_outcome: 'success',
   ...over,
 })
+
+let checkId = 0
+export const check = (over: Record<string, unknown> = {}) => ({
+  id: ++checkId,
+  service_id: 1,
+  status: 'up',
+  http_status: 200,
+  response_time_ms: 100,
+  error: null,
+  checked_at: new Date().toISOString(),
+  ...over,
+})

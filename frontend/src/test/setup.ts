@@ -1,5 +1,5 @@
 import { afterEach, vi } from 'vitest'
-import { cleanup } from '@testing-library/react'
+import { cleanup, configure } from '@testing-library/react'
 
 // jsdom has no ResizeObserver, which Recharts needs
 class RO {
@@ -8,6 +8,9 @@ class RO {
   disconnect() {}
 }
 vi.stubGlobal('ResizeObserver', RO)
+
+// The first chart test loads the large Recharts bundle, which can take over a second on a slow machine
+configure({ asyncUtilTimeout: 5000 })
 
 afterEach(() => {
   cleanup()

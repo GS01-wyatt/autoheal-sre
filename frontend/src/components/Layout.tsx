@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { NavLink, Outlet } from 'react-router-dom'
-import { Activity, HeartPulse, LayoutDashboard, Menu, Moon, ScrollText, Server, ShieldAlert, Sun, X } from 'lucide-react'
+import { Activity, HeartPulse, LayoutDashboard, Menu, Moon, ScrollText, Server, ShieldAlert, Sun, TrendingUp, X } from 'lucide-react'
 import { api } from '../lib/api'
 import { usePolling } from '../hooks/usePolling'
 import { useTheme } from '../hooks/useTheme'
@@ -10,6 +10,7 @@ import { Badge, Dot } from './ui'
 const NAV = [
   { to: '/', label: 'Overview', icon: LayoutDashboard, end: true },
   { to: '/services', label: 'Services', icon: Server, end: false },
+  { to: '/metrics', label: 'Live Metrics', icon: TrendingUp, end: false },
   { to: '/incidents', label: 'Incidents', icon: ShieldAlert, end: false },
   { to: '/healing', label: 'Auto-Healing', icon: HeartPulse, end: false },
   { to: '/logs', label: 'Logs', icon: ScrollText, end: false },

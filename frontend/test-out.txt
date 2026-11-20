@@ -1,0 +1,205 @@
+﻿
+[1m[30m[46m RUN [49m[39m[22m [36mv5.1.0 [39m[90mC:/dev/autoheal-sre/frontend[39m
+
+ [32mΓ£ô[39m src/lib/metrics.test.ts [2m([22m[2m11 tests[22m[2m)[22m[32m 138[2mms[22m[39m
+ [32mΓ£ô[39m src/lib/chartData.test.ts [2m([22m[2m5 tests[22m[2m)[22m[32m 148[2mms[22m[39m
+ [32mΓ£ô[39m src/hooks/usePolling.test.tsx [2m([22m[2m4 tests[22m[2m)[22m[33m 949[2mms[22m[39m
+   [32mΓ£ô[39m usePolling [2m(4)[22m
+     [33m[2mΓ£ô[22m[39m loads data[33m 316[2mms[22m[39m
+     [33m[2mΓ£ô[22m[39m ignores a slow answer that arrives after the key changed[33m 365[2mms[22m[39m
+ [32mΓ£ô[39m src/pages/Incidents.test.tsx [2m([22m[2m5 tests[22m[2m)[22m[33m 2629[2mms[22m[39m
+   [32mΓ£ô[39m Incidents page [2m(5)[22m
+     [33m[2mΓ£ô[22m[39m shows an empty state with an explanation[33m 713[2mms[22m[39m
+     [33m[2mΓ£ô[22m[39m lists incidents with status, severity and duration[33m 378[2mms[22m[39m
+     [33m[2mΓ£ô[22m[39m opens the recovery attempts and timeline of an incident[33m 1191[2mms[22m[39m
+ [32mΓ£ô[39m src/App.test.tsx [2m([22m[2m4 tests[22m[2m)[22m[33m 2264[2mms[22m[39m
+   [32mΓ£ô[39m App shell [2m(4)[22m
+     [33m[2mΓ£ô[22m[39m toggles and remembers the theme[33m 1703[2mms[22m[39m
+ [32mΓ£ô[39m src/pages/AutoHealing.test.tsx [2m([22m[2m6 tests[22m[2m)[22m[33m 2890[2mms[22m[39m
+   [32mΓ£ô[39m Auto-Healing page [2m(6)[22m
+     [33m[2mΓ£ô[22m[39m shows the recovery policy and per-service state[33m 840[2mms[22m[39m
+     [33m[2mΓ£ô[22m[39m shows cooldown and retry progress during an incident[33m 900[2mms[22m[39m
+     [33m[2mΓ£ô[22m[39m in demo mode, simulation buttons call the backend[33m 434[2mms[22m[39m
+     [33m[2mΓ£ô[22m[39m shows the error when a simulation fails[33m 437[2mms[22m[39m
+ [32mΓ£ô[39m src/pages/Logs.test.tsx [2m([22m[2m5 tests[22m[2m)[22m[33m 3671[2mms[22m[39m
+   [32mΓ£ô[39m Logs page [2m(5)[22m
+     [33m[2mΓ£ô[22m[39m shows log rows with level, source and service name[33m 1595[2mms[22m[39m
+     [33m[2mΓ£ô[22m[39m sends search text (debounced) and level to the backend[33m 1019[2mms[22m[39m
+     [33m[2mΓ£ô[22m[39m filters by service[33m 387[2mms[22m[39m
+     [33m[2mΓ£ô[22m[39m explains an empty log, and a filtered empty log differently[33m 566[2mms[22m[39m
+ [32mΓ£ô[39m src/pages/Services.test.tsx [2m([22m[2m7 tests[22m[2m)[22m[33m 4923[2mms[22m[39m
+   [32mΓ£ô[39m Services page [2m(6)[22m
+     [33m[2mΓ£ô[22m[39m shows an empty state[33m 553[2mms[22m[39m
+     [33m[2mΓ£ô[22m[39m does not call the backend when the form is invalid[33m 1823[2mms[22m[39m
+     [33m[2mΓ£ô[22m[39m creates a service with values converted to milliseconds[33m 1083[2mms[22m[39m
+     [33m[2mΓ£ô[22m[39m shows the backend error message (duplicate name)[33m 693[2mms[22m[39m
+     [33m[2mΓ£ô[22m[39m lists services, filters by search, and deletes only after confirmation[33m 490[2mms[22m[39m
+node.exe : [90mstderr[2m | src/pages/LiveMetrics.test.tsx[2m > 
+[22m[2mLive Metrics page[2m > [22m[2mshows counts, success rate, latency 
+percentiles and recent failures
+At line:1 char:1
++ & "C:\Program Files\nodejs/node.exe" "C:\Users\golu kuar\AppData\Roam ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: ([90mstderr[2m...recent failures 
+   :String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+[22m[39mThe width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and 
+height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) 
+to control the
+       height and width.
+The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and 
+height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) 
+to control the
+       height and width.
+
+[90mstderr[2m | src/pages/LiveMetrics.test.tsx[2m > [22m[2mLive Metrics 
+page[2m > [22m[2mexplains connection failures that have no HTTP status
+[22m[39mThe width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and 
+height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) 
+to control the
+       height and width.
+The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and 
+height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) 
+to control the
+       height and width.
+
+[90mstderr[2m | src/pages/LiveMetrics.test.tsx[2m > [22m[2mLive Metrics 
+page[2m > [22m[2msays so when there are no failures
+[22m[39mThe width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and 
+height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) 
+to control the
+       height and width.
+The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and 
+height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) 
+to control the
+       height and width.
+
+[90mstderr[2m | src/pages/LiveMetrics.test.tsx[2m > [22m[2mLive Metrics 
+page[2m > [22m[2mchanges the window and the service through the backend
+[22m[39mThe width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and 
+height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) 
+to control the
+       height and width.
+The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and 
+height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) 
+to control the
+       height and width.
+
+[90mstderr[2m | src/pages/Overview.test.tsx[2m > [22m[2mOverview[2m > 
+[22m[2mshows an error with a working retry when the backend is unreachable
+[22m[39mThe width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and 
+height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) 
+to control the
+       height and width.
+
+ [31mΓ¥»[39m src/pages/Overview.test.tsx [2m([22m[2m4 tests[22m[2m | [22m[31m1 failed[39m[2m)[22m[33m 7611[2mms[22m[39m
+   [31mΓ¥»[39m Overview [2m(4)[22m
+     [33m[2mΓ£ô[22m[39m shows real numbers from the backend[33m 924[2mms[22m[39m
+[31m     [31m├ù[31m says all systems operational when everything is up[39m[33m 5920[2mms[22m[39m
+     [32mΓ£ô[39m shows an empty state when there are no services[32m 91[2mms[22m[39m
+     [33m[2mΓ£ô[22m[39m shows an error with a working retry when the backend is unreachable[33m 639[2mms[22m[39m
+[90mstderr[2m | src/pages/LiveMetrics.test.tsx[2m > [22m[2mLive Metrics 
+page[2m > [22m[2mchanges the window and the service through the backend
+[22m[39mThe width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and 
+height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) 
+to control the
+       height and width.
+The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and 
+height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) 
+to control the
+       height and width.
+
+[90mstderr[2m | src/pages/LiveMetrics.test.tsx[2m > [22m[2mLive Metrics 
+page[2m > [22m[2mchanges the window and the service through the backend
+[22m[39mThe width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and 
+height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) 
+to control the
+       height and width.
+The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and 
+height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) 
+to control the
+       height and width.
+
+ [31mΓ¥»[39m src/pages/LiveMetrics.test.tsx [2m([22m[2m7 tests[22m[2m | [22m[31m1 failed[39m[2m)[22m[33m 8527[2mms[22m[39m
+   [31mΓ¥»[39m Live Metrics page [2m(7)[22m
+[31m     [31m├ù[31m shows counts, success rate, latency percentiles and recent failures[39m[33m 7215[2mms[22m[39m
+     [32mΓ£ô[39m explains connection failures that have no HTTP status[32m 129[2mms[22m[39m
+     [32mΓ£ô[39m says so when there are no failures[32m 187[2mms[22m[39m
+     [33m[2mΓ£ô[22m[39m changes the window and the service through the backend[33m 810[2mms[22m[39m
+     [32mΓ£ô[39m shows an empty state without services[32m 36[2mms[22m[39m
+     [32mΓ£ô[39m shows an error state when the backend is down[32m 73[2mms[22m[39m
+     [32mΓ£ô[39m shows an error when checks fail to load[32m 60[2mms[22m[39m
+
+[31mΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»[39m[1m[41m Failed Tests 2 
+[49m[22m[31mΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»[39m
+
+[41m[1m FAIL [22m[49m src/pages/LiveMetrics.test.tsx[2m > [22mLive 
+Metrics page[2m > [22mshows counts, success rate, latency percentiles and 
+recent failures
+[31m[1mError[22m: Test timed out in 5000ms.
+If this is a long-running test, pass a timeout value as the last argument or 
+configure it globally with "testTimeout".[39m
+[36m [2mΓ¥»[22m src/pages/LiveMetrics.test.tsx:[2m13:3[22m[39m
+    [90m 11|[39m
+    [90m 12|[39m [34mdescribe[39m([32m'Live Metrics page'[39m[33m,[39m 
+() [33m=>[39m {
+    [90m 13|[39m   it('shows counts, success rate, latency percentiles and 
+recent failuΓÇª
+    [90m   |[39m   [31m^[39m
+    [90m 14|[39m     [90m// API order: newest first[39m
+    [90m 15|[39m     [34mmockApi[39m({
+
+[31m[2mΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»Γ
+Ä»[1/2]ΓÄ»[22m[39m
+
+[41m[1m FAIL [22m[49m src/pages/Overview.test.tsx[2m > [22mOverview[2m 
+> [22msays all systems operational when everything is up
+[31m[1mError[22m: Test timed out in 5000ms.
+If this is a long-running test, pass a timeout value as the last argument or 
+configure it globally with "testTimeout".[39m
+[36m [2mΓ¥»[22m src/pages/Overview.test.tsx:[2m29:3[22m[39m
+    [90m 27|[39m   })
+    [90m 28|[39m
+    [90m 29|[39m   it('says all systems operational when everything is up', 
+async () =>ΓÇª
+    [90m   |[39m   [31m^[39m
+    [90m 30|[39m     mockApi({ 'GET /api/metrics': [metric()], 'GET 
+/api/incidents': []ΓÇª
+    [90m 31|[39m     [34mrenderPage[39m()
+
+[31m[2mΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»Γ
+Ä»[2/2]ΓÄ»[22m[39m
+
+
+[2m Test Files [22m [1m[31m2 failed[39m[22m[2m | [22m[1m[32m8 passed[39m[22m[90m (10)[39m
+[2m      Tests [22m [1m[31m2 failed[39m[22m[2m | [22m[1m[32m56 passed[39m[22m[90m (58)[39m
+[2m   Start at [22m 09:57:15
+[2m   Duration [22m 35.06s[2m (environment 65%, setup 15%, tests 12%, import 7%, transform 1%, worker 1%)[22m
+

@@ -1,35 +1,44 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 
-/** Loads data now and then every `intervalMs` (paused while the tab is hidden). */
+interface Result<T> {
+  key: unknown
+  data?: T
+  error?: Error
+}
+
+/**
+ * Loads data now and then every `intervalMs` (paused while the tab is hidden).
+ * Results belong to the `key` they were fetched for: when the key changes (another service, another filter)
+ * old data is not shown and late answers for the old key are ignored.
+ */
 export function usePolling<T>(fn: () => Promise<T>, intervalMs = 5000, key: unknown = '') {
-  const [data, setData] = useState<T | undefined>(undefined)
-  const [error, setError] = useState<Error | undefined>(undefined)
-  const [loading, setLoading] = useState(true)
+  const [result, setResult] = useState<Result<T> | null>(null)
   const fnRef = useRef(fn)
+  const keyRef = useRef(key)
   const alive = useRef(true)
 
   useEffect(() => {
     fnRef.current = fn
+    keyRef.current = key
   })
 
-  const load = useCallback(async () => {
+  const load = useCallback(async (forKey: unknown) => {
     try {
       const v = await fnRef.current()
-      if (!alive.current) return
-      setData(v)
-      setError(undefined)
+      if (alive.current && Object.is(keyRef.current, forKey)) setResult({ key: forKey, data: v })
     } catch (e) {
-      if (alive.current) setError(e instanceof Error ? e : new Error(String(e)))
-    } finally {
-      if (alive.current) setLoading(false)
+      if (!alive.current || !Object.is(keyRef.current, forKey)) return
+      const error = e instanceof Error ? e : new Error(String(e))
+      // keep the last good data of the same key, so one failed refresh does not blank the screen
+      setResult((prev) => ({ key: forKey, data: prev && Object.is(prev.key, forKey) ? prev.data : undefined, error }))
     }
   }, [])
 
   useEffect(() => {
     alive.current = true
-    void load()
+    void load(key)
     const t = setInterval(() => {
-      if (!document.hidden) void load()
+      if (!document.hidden) void load(key)
     }, intervalMs)
     return () => {
       alive.current = false
@@ -37,5 +46,7 @@ export function usePolling<T>(fn: () => Promise<T>, intervalMs = 5000, key: unkn
     }
   }, [load, intervalMs, key])
 
-  return { data, error, loading, refresh: load }
+  const current = result && Object.is(result.key, key) ? result : null
+  const refresh = useCallback(() => load(keyRef.current), [load])
+  return { data: current?.data, error: current?.error, loading: current === null, refresh }
 }
