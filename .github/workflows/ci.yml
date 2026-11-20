@@ -1,0 +1,91 @@
+name: CI
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+
+# Least privilege: this workflow only reads the repository
+permissions:
+  contents: read
+
+# A newer push cancels the older run of the same branch
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  backend:
+    name: Backend (typecheck, tests, build)
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    defaults:
+      run:
+        working-directory: backend
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: backend/package-lock.json
+      - run: npm ci
+      - run: npm run typecheck
+      - run: npm test
+      - run: npm run build
+
+  frontend:
+    name: Frontend (tests, build)
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    defaults:
+      run:
+        working-directory: frontend
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+      - run: npm ci
+      - run: npm test
+      - run: npm run build
+
+  docker:
+    name: Docker (build, start, smoke test)
+    needs: [backend, frontend]
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: docker/setup-buildx-action@v3
+
+      - name: Build and start the stack (waits until both containers are healthy)
+        run: docker compose up -d --build --wait --wait-timeout 180
+
+      - name: Dashboard serves the app and proxies the API
+        run: |
+          curl -fsS http://localhost:8080/api/health
+          curl -fsS http://localhost:8080/ | grep -q "AutoHeal SRE"
+          curl -fsS http://localhost:8080/incidents | grep -q "AutoHeal SRE"   # single page app fallback
+
+      - name: Backend port must NOT be published
+        run: |
+          if curl -fsS --max-time 3 http://localhost:4000/api/health; then
+            echo "::error::backend port 4000 is reachable from outside the compose network"
+            exit 1
+          fi
+
+      - name: Containers do not run as root
+        run: |
+          test "$(docker compose exec -T backend id -u)" != "0"
+          test "$(docker compose exec -T frontend id -u)" != "0"
+
+      - name: Show container logs when something failed
+        if: failure()
+        run: docker compose logs --no-color --tail 100
+
+      - name: Stop the stack
+        if: always()
+        run: docker compose down -v
