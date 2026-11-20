@@ -1,0 +1,48 @@
+name: autoheal-sre
+
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    image: autoheal-sre-backend:local
+    restart: unless-stopped
+    environment:
+      LOG_LEVEL: ${LOG_LEVEL:-info}
+      FAILURE_THRESHOLD: ${FAILURE_THRESHOLD:-3}
+      MAX_RECOVERY_RETRIES: ${MAX_RECOVERY_RETRIES:-3}
+      RECOVERY_COOLDOWN_MS: ${RECOVERY_COOLDOWN_MS:-60000}
+      VERIFY_DELAY_MS: ${VERIFY_DELAY_MS:-3000}
+      MAX_RESTARTS_PER_HOUR: ${MAX_RESTARTS_PER_HOUR:-6}
+      DEMO_MODE: ${DEMO_MODE:-false}
+    volumes:
+      - autoheal-data:/data        # the SQLite database lives here and survives container restarts
+    read_only: true
+    tmpfs:
+      - /tmp
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+    # no "ports:" on purpose: only the dashboard container can reach the API
+
+  frontend:
+    build:
+      context: ./frontend
+    image: autoheal-sre-frontend:local
+    restart: unless-stopped
+    ports:
+      - "${DASHBOARD_PORT:-8080}:8080"
+    depends_on:
+      backend:
+        condition: service_healthy
+    read_only: true
+    tmpfs:
+      - /tmp
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+
+volumes:
+  autoheal-data:

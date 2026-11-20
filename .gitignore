@@ -9,3 +9,5 @@ dist/
 .aws/
 
 backup/
+
+build-out.txt
